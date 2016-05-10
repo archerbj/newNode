@@ -1,0 +1,178 @@
+
+
+ <script type="text/javascript">
+ RED.nodes.registerType('wechat in',{ 
+	category: 'wechat',
+	color: '#00CC00', 
+	defaults: { name: {value:""},
+				token:{value:""},
+				encoding:{value:"0"},
+				// key:{value:"",validate:function(v){return v.length==43}},
+				key:{value:""},
+				path:{value:""}
+				},
+	align:"left",
+	inputs:0, outputs:1, icon: "weChatImage.jpeg", 
+	label: function() { return this.name||"wechat"; },
+	oneditprepare: function(){
+		encoding = $('#node-input-encoding').val();
+		$('#node-input-encoding').change(function(){
+			encoding = $('#node-input-encoding').val();
+			switch(encoding){
+				case "0":
+				  $('#node-div-key').hide();
+				break;
+				case "1":
+					$('#node-div-key').show();
+				break;
+			}
+		});
+
+		
+			$('#node-input-path').change(function(){
+			var path = $('#node-input-path').val();
+
+			$('#node-p-path').html('The url will be http://{hostname}'+path);
+                
+		})
+	}
+
+	 });
+	
+ 	
+
+	</script>
+
+
+
+<script type="text/x-red" data-template-name="wechat in"> 
+
+
+<div class="form-row"> 
+		<label for="node-input-name">
+			<i class="icon-tag"></i> name
+		</label> 
+		<input type="text" id="node-input-name" placeholder="Name">
+</div> 
+
+<div class="form-row"> 
+		<label for="node-input-path">
+			<i class="fa fa-plane"></i> path
+		</label> 
+		<input type="text" id="node-input-path" placeholder="/path">
+		<p id="node-p-path"></p>
+</div> 
+
+
+<div class="form-row" id="node-div-token"> 
+		<label for="node-input-token">
+			<i class="fa fa-ticket"></i> token
+		</label> 
+		<input type="text" id="node-input-token" placeholder="token">
+</div> 
+
+
+<div class="form-row"> 
+		<label for="node-input-encoding">
+			<i class="fa fa-lock"></i> security
+		</label> 
+		<select type="text" id="node-input-encoding" name="node-input-encoding">
+			<option value="0">no encryption</option>
+			<option value="1">encryption</option>
+		</select>
+</div> 
+
+<div class="form-row" id='node-div-key'> 
+		<label for="node-input-key">
+			<i class="fa fa-key"></i> AESKey Encoding
+		</label> 
+		<input type="text" id="node-input-key" placeholder="key">
+</div> 
+
+</script>
+
+
+<script type="text/x-red" data-help-name="wechat in">
+
+  <div name="explanation">	
+  	<code><b>msg.wechat</b></code> <span>contain data from wechat service</span><br>
+  	<p>sample:</p>
+		<pre>{
+  "ToUserName": "gh_....",
+  "FromUserName": "o6RO1u....",
+  "CreateTime": "1462863766",
+  "MsgType": "text",
+  "Content": "test",
+  "MsgId": "6282952033884751672"
+}
+		</pre>
+
+ </div>
+
+ </script>
+
+
+
+ <script type="text/javascript">
+
+ RED.nodes.registerType('wechat out',{ 
+	category: 'wechat',
+	color: '#00CC00', 
+	defaults: { name: {value:""}
+				},
+	align:"right",
+	inputs:1, outputs:0, icon: "weChatImage.jpeg", 
+	label: function() { return this.name||"wechat"; }
+
+	 });
+
+
+	
+	</script>
+
+
+
+<script type="text/x-red" data-template-name="wechat out"> 
+
+
+<div class="form-row"> 
+<label for="node-input-name">
+<i class="icon-tag"></i> name
+</label> 
+	<input type="text" id="node-input-name" placeholder="Name">
+	</div> 
+
+
+
+	</script>
+
+
+<script type="text/x-red" data-help-name="wechat out">
+
+<div>
+	<p>modify <code><b>msg.wechat.MsgType</b></code> and <code><b>msg.wechat.Content</b></code> for response message
+		simply set <code><b>msg.payload</b></code> if response message is flat text,
+	</p>
+
+	<p>or if you want response other format like:</p>
+		<pre>
+  msg.wechat.MsgType = "news";
+  msg.wechat.ArticleCount = 1;
+  msg.wechat.Articles = {
+  item:{
+        Title:'XXX',
+        Description:'XXX',
+        Url:"http://XXX",
+        PicUrl:"http://XXX.png"
+  }
+}; 
+	</pre>
+ 	
+ </div>
+
+ </script>
+
+
+
+
+
